@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour {
 		bool Jump = Input.GetKey (KeyCode.Space);
 		if (Jump && !InAir) {
 			for (var i = 0; i <= 0.1; i++) {
-				Up = 25;
+				Up = 500;
 				InAir = true;
 			}
 		} else {
@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
 				Up = 0;
 			}
 		}
-		Vector3 movement = new Vector3 (moveHorizontal, Up, moveVertical);
+		Vector3 movement = new Vector3 (moveHorizontal * 2, Up, moveVertical * 2);
 		rb.AddForce (movement * Speed);
 	}
 	void OnCollisionEnter(Collision other){
