@@ -5,6 +5,7 @@ using UnityEngine;
 public class ColourChanger : MonoBehaviour {
 	public Light player; //Variable for keeping track of player
 	public Color aColour;
+	public GameObject pickup;
 	public int Redvalue;
 	public int Greenvalue;
 	public int Bluevalue;
@@ -13,8 +14,15 @@ public class ColourChanger : MonoBehaviour {
 	void Start () {
 		player = GetComponent<Light> (); //bind the light to the player variable
 	}
-	void update (){
-		
+	void OnCollision (Collision Pickup){
+		if(Pickup.gameObject.CompareTag("Pickup")){
+			pickup = Pickup.gameObject;
+			Colornum = 1;
+			Redvalue = Pickup.gameObject.GetComponent<Pickups> ().red;
+			Greenvalue = Pickup.gameObject.GetComponent<Pickups> ().green;
+			Bluevalue = Pickup.gameObject.GetComponent<Pickups> ().blue;
+			Debug.Log ("Hi");
+		}
 	}
 	// Update is called once per frame
 	void FixedUpdate () {
