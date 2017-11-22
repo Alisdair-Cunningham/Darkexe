@@ -3,37 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
-	public Rigidbody rb;
-	public int Speed;
-	public bool InAir;
-	public int Up;
-	// Use this for initialization
-	void Start () {
-		rb = GetComponent<Rigidbody> ();
+	public Rigidbody player;
+	public bool Jumping;
+	public float Speed;
+
+	void Start(){
+		player = GetComponent<Rigidbody> ();
 	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
-		float moveHorizontal = Input.GetAxis ("Horizontal");
-		float moveVertical = Input.GetAxis ("Vertical");
-		bool Jump = Input.GetKey (KeyCode.Space);
-		if (Jump && !InAir) {
-			for (var i = 0; i <= 0.1; i++) {
-				Up = 500;
-				InAir = true;
-			}
-		} else {
-			for (var i = 0; i <= 10; i++) {
-				Up = 0;
-			}
+	void Update(){
+		float x = Input.GetAxis ("Horizontal");
+		float z = Input.GetAxis ("Vertical");
+		if (Input.GetKeyDown (KeyCode.Space) && Jumping) {
+			player.AddForce (Vector3.up * 300.0f);
 		}
-		Vector3 movement = new Vector3 (moveHorizontal * 2, Up, moveVertical * 2);
-		rb.AddForce (movement * Speed);
+		Vector3 movement = new Vector3 (x, 0, z);
+		player.AddForce (movement * Speed);
 	}
-	void OnCollisionEnter(Collision other){
-		if(other.collider.CompareTag("Ground")){
-			InAir = false;
-			Up = 0;
+	void FixedUpdate(){
+		if (Input.GetAxis ("Vertical") > 0) 
+		{
+			var camdir = Camera.main.transform.TransformDirection (Vector3.forward *2);
+			camdir.y = 0;
+		} else if (Input.GetAxis ("Vertical") < 0) {
+			var camdir2 = Camera.main.transform.TransformDirection (Vector3.back *2);
+			camdir2.y = 0;
+		} else if (Input.GetAxis ("Horizontal") < 0) {
+			var camdir3 = Camera.main.transform.TransformDirection (Vector3.left *2);
+			camdir3.y = 0;
+		} else if (Input.GetAxis ("Horizontal") > 0) {
+			var camdir4 = Camera.main.transform.TransformDirection (Vector3.right *2);
+			camdir4.y = 0;
 		}
 	}
 }
